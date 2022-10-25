@@ -62,6 +62,14 @@ class Contenedor {
             return "el elemento no puede ser eliminado"
         }
     }
+    async deleteAll(){
+        try {
+            await fs.promises.writeFile(this.filename,JSON.stringify([]));
+            return `Los productos fueron eliminados`;
+        } catch (error) {
+            return "el elemento no puede ser eliminado"
+        }
+    }
 
     getName(){
         return this.filename;
@@ -88,5 +96,6 @@ const getData = async()=>{
     const productoEncontrado = await manejadorProductos.getById(1);
     console.log("producto encontrado>", productoEncontrado)
     await manejadorProductos.deleteById(2);
+    //await manejadorProductos.deleteAll();
 }
 getData()
