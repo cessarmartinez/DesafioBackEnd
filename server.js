@@ -1,48 +1,29 @@
-const serverExpress = require("express");
-const server = serverExpress();
-server.listen(8080, () => console.log("sever running in port 8080"));
 
-const fs = require('fs');
-class Contenedor {
-    constructor(archivo){
-        this.archivo = archivo;
-    }
-    async getById(id) {
-        try {
-            const productos = await fs.promises.readFile(this.archivo, "utf-8");
-            const productosRes = await JSON.parse(productos);
-            const findProducto = productosRes.find(producto => producto.id === id);
-            return findProducto;
-        } catch (error) {
-            console.log("El producto no esta disponible")
-        }
-    }
-    async getAll() {
-        try {
-        const content = await fs.promises.readFile(this.archivo, "utf-8");
-        const contentJson = await JSON.parse(content);
-        /* console.log(content); */
-        return contentJson;
-        } catch (error) {
-            console.log("error al obtener los productos")
-        }
-    }
-};
+const Contenedor = require("./classContenedor");
+const fs = require("fs");
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 8080;
 
-server.get("/productos", async (request, response)=>{
-    const productos = await data.getAll();
-    response.send(productos)
+const contenedor = new Contenedor('productos.json');
+
+app.get('/', (req, res) => {
+    res.send("Productos disponibles: localhost:8080/productos || Producto al azar: /productoRandom")
+  });
+
+app.get('/productos', async(req, res) => {
+    const productos = await contenedor.getAll();
+
+    res.send(productos);
 })
 
-server.get("/productoRandom", async (request, response)=>{
-    const productos = await data.getAll();
-    const randomProducto = random(0,productos.length-1);
-    const producto = productos[randomProducto];
-    response.send(producto);
+app.get('/productoRandom', async(req, res) => {
+    const maxId = 4;
+    const numRandom = Math.floor(Math.random() * maxId);
+    const productos = await contenedor.getById(numRandom);
+    res.send(productos);
+  })
+
+app.listen(port, () => {
+  console.log(`Servidor ejecutandose en el puerto 8080`)
 })
-
-const data = new Contenedor('productos.txt');
-
-const random = (min, max) => {
-    return Math.floor(Math.random() * (max - min) + min);
-}

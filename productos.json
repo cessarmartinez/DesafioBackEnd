@@ -1,0 +1,26 @@
+[
+    {	    
+            "id": 1,
+            "code" :"adidas",
+            "name":"OZELIA W",
+            "precio":30999,
+            "imagen":"https://raw.githubusercontent.com/cessarmartinez/DesafioJS/main/assets/img/ozelia.png",
+            "descripcion":"zapatilla ozelia w"     
+        },
+        {
+            "id": 2,
+            "code" :"adidas",
+            "name":"HARDEN STEPBACK 3",
+            "precio": 22999,
+            "imagen":"https://raw.githubusercontent.com/cessarmartinez/DesafioJS/main/assets/img/harden.png",
+            "descripcion":"zapatilla harden stepback 3"   
+        },
+        {	
+            "id": 3,
+            "code" :"adidas",
+            "name":"RUNFALCON",
+            "precio": 13999,
+            "imagen":"https://raw.githubusercontent.com/cessarmartinez/DesafioJS/main/assets/img/runfalcon.png",
+            "descripcion":"zapatilla runfalcon"     
+        }
+    ]
