@@ -99,14 +99,17 @@ product.addProducts(
     'Descripcion',
     1500,
     'thumbnail',
-    002,
+    001,
+    6
+);
+product.addProducts(
+    'Producto',
+    'Descripcion',
+    1500,
+    'thumbnai',
+    001,
     6
 );
 
+product.getProducts().then(response => console.log(response) )
 
-
-console.log(product.getProducts());
-
-//console.log(product.getProductsById(1))
-
-//product.deleteProduct();
