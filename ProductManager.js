@@ -1,115 +1,134 @@
-let products = [];
+const {promises} = require("fs")
+const fsP = promises
+const fs = require("fs")
 
-const fs = require ('fs');
+
+const products = []
+const path = "./DB.json"
 
 class ProductManager {
-    constructor(){
+    constructor(path) {
         this.products = products
-        this.path = './data.json'
+        this.path = path
     }
 
-    archivoJson = async () => {
-        try {
-            const toJson = JSON.stringify(this.products, 'null', 2)
-            await fs.promises.writeFile(this.path, toJson, 'utf-8')
-        }
-        catch (err) { return console.log(err) }
+    //Método para agregar productos
+    addProducts(product){
+    //valida que todos los campos estén completos
+        if(!product.title ||
+        !product.description ||
+        !product.price ||
+        !product.thumbnail ||
+        !product.code ||
+        !product.stock) return console.log("Every fields are request")
+        
+        // valida el código del producto, si ya existe lo reporta por consola
+        let productPushed = this.products.find(prod => prod.code === product.code)
+        if(productPushed) return console.log(`This products was already pushed, here's the code:"${product.code}"`)
+
+        //le asigna un id al producto agregado
+        return this.products.push({id: this.products.length+1, ...product})
     }
 
-    addProducts = (title, description, price, thumbnail, code, stock) => {
-        const product = {
-            title,
-            description,
-            price,
-            thumbnail,
-            code,
-            stock
-        }
-
-        if(this.products.length === 0){
-            product.id = 1
+    // Método que elimina un producto con el ID desde el JSON
+    deleteProduct(pid) {
+        fsP.readFile(this.path,"utf-8",(err, data)=> {
+            if(err){
+                console.log(err)
+                return
+            }
+        const product = JSON.parse(data)
+        const index = product.findIndex(product => product.id === pid)
+        if(index !== -1) {
+            product.splice(index, 1)
         } else {
-            product.id = this.products[this.products.length - 1].id + 1
+            console.log(`Product with id ${id} not found`)
+            return
         }
+        fs.writeFile(path, JSON.stringify(product, null, 2),"utf-8" , err => {
+            if (err){
+                console.log(err)
+            } else {
+                console.log(`Product with id ${id} succesfully removed`)
+            } 
+        }) 
+        }
+    )}
 
-        if (Object.values(product).every(value => value)){
-            this.products.push(product)
-            this.archivoJson()
-        } else {
-            return console.log('Todos los campos son obligatorios')
-        }
+    // Método que crea el archivo "DB.json"
+    createJsonFile =  (path)=> {
+        fsP.writeFile(path,JSON.stringify([...product.products],null,2),"utf-8", (err)=> {
+            if(err) return console.log(err)
+        })
     }
 
-    getProducts = async () => {
+    // Traer productos desde el JSON pero con PROMISES.}
+    getProducts = async()=> {
         try {
-            const readFile = await fs.promises.readFile(this.path, 'utf-8');
-            return console.log(readFile)
+            let data = await fsP.readFile(this.path,"utf-8")
+            const parseData = JSON.parse(data)            
+            return parseData
+        } catch (err) {
+            return []
         }
-        catch (err) { return console.log(err) }
     }
-
-    getProductsById = async (id) => {
-        try {
-            const readFile = await fs.promises.readFile(this.path, 'utf-8')
-            const obj = JSON.parse(readFile)
-            const find = obj.find(product => product.id === id)
-            return find ? find : console.log('No products found')
-        }
-        catch (err) { return console.log(err) }
+    // Actualizar/modificar productos
+    updateProduct(pid, newProduct) {
+        fsP.readFile(this.path, "utf-8", (err, data) => {
+            if (err) {
+                console.log(err)
+                return
+            }
+            const products = JSON.parse(data)
+            const index = products.findIndex(product => product.id === pid)
+            if (index !== -1) {
+                products[index] = { ...newProduct, pid }
+            } else {
+                console.log(`Product with id ${id} not found`)
+                return
+            }
+            fsP.writeFile(this.path, JSON.stringify(products, null, 2), "utf-8", err => {
+                if (err) {
+                    console.log(err)
+                } else {
+                    console.log(`Product with id ${id} successfully modified`)
+                }
+            })
+        })
     }
-
-    updateProduct = async (id, obj) => {
-        try {
-            const readFile = await fs.promises.readFile(this.path, 'utf-8')
-            const products = JSON.parse(readFile)
-
-            const returnObj = Object.assign(products[id-1], obj)
-            console.log(products[id-1])
-            this.products = products
-            this.archivoJson()
-        }
-        catch (err) { return console.log(err) }
+    
+    // Trae producto con ID desde JSON
+    async getProductById(pid) {
+        const contenido = await fsP.readFile(this.path, "utf-8")
+        
+        let product = JSON.parse(contenido)
+        let productId = product.find(prod => prod.id === pid)
+        
+        if(!product) return "Product not found" 
+        
+        return productId
     }
-
-    deleteProduct = async (id) => {
-        try { 
-            const readFile = await fs.promises.readFile(this.path, 'utf-8')
-            const products = JSON.parse(readFile)
-            console.log(products.splice(id-1, 1), 'Producto eliminado')
-            this.products = products
-            this.archivoJson()
-        }
-        catch (err) { return console.log(err) }
-    }
+        
 }
+const product = new ProductManager("./DB.json")
+product.createJsonFile("./DB.json")
 
+product.addProducts({
+    title: "Tan cerca, Tan cerca",
+    description: "Cuentos",
+    price: 300,
+    thumbnail: "public/images/tanC.png",
+    code: "TanC123",
+    stock: 4
+})
+product.addProducts({
+    title: "Tan cerca, Tan cerca",
+    description: "Cuentos",
+    price: 300,
+    thumbnail: "public/images/tanC.png",
+    code: "SJAKSJA",
+    stock: 4
+})
+product.getProducts().then(response => console.log(response))
 
-const product = new ProductManager()
-
-product.addProducts(
-    'Producto',
-    'Descripcion',
-    1500,
-    'thumbnail',
-    001,
-    6
-);
-product.addProducts(
-    'Producto',
-    'Descripcion',
-    1500,
-    'thumbnail',
-    001,
-    6
-);
-product.addProducts(
-    'Producto',
-    'Descripcion',
-    1500,
-    'thumbnai',
-    001,
-    6
-);
-
-product.getProducts().then(response => console.log(response) )
-
+module.exports = ProductManager
