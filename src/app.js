@@ -1,17 +1,16 @@
-const express = require ("express")
-const productRouter = require("./routes/products")
-const cartRouter = require("./routes/cart")
+const express = require("express");
+const productsRouter = require("./routes/products.router");
+const cartRouter = require("./routes/cart.router");
 
-const port = 8080
-const app = express()
+const app = express();
 
-app.use(express.json())
-app.use(express.urlencoded({extended: true}))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname + "/public"));
 
-app.use("/", productRouter)
-app.use('/api/productos', productRouter)
-app.use("/", cartRouter)
+app.use("/api/products", productsRouter);
+app.use("/api/cart", cartRouter);
 
-app.listen(port, ()=>{
-    console.log(`Listen on port ... ${port}`)
-})
+app.listen(8080, () => {
+	console.log("Escuchando el puerto 8080");
+});

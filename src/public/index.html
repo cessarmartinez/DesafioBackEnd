@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="style.css" />
+		<title>Proyecto</title>
+	</head>
+	<body>
+		<form action="/api/products/" method="PUT" class="form-put">
+			<h3>Modificar producto:</h3>
+			<input
+				type="number"
+				name="id"
+				id="id"
+				placeholder="Id del Producto"
+				required
+			/>
+			<input
+				type="text"
+				name="title"
+				id="title"
+				placeholder="Titulo del Producto"
+				required
+			/>
+			<input
+				type="text"
+				name="description"
+				id="description"
+				placeholder="Descripcion del Producto"
+				required
+			/>
+			<input
+				type="text"
+				name="code"
+				id="code"
+				placeholder="Codigo del Producto"
+				required
+			/>
+			<input
+				type="number"
+				name="price"
+				id="price"
+				placeholder="Precio del Producto"
+				required
+			/>
+			<label for="status">
+				<input type="checkbox" name="status" id="status" checked required />
+				Status
+			</label>
+			<input
+				type="number"
+				name="stock"
+				id="stock"
+				placeholder="Stock del Producto"
+				required
+			/>
+			<input
+				type="text"
+				name="category"
+				id="category"
+				placeholder="Categoria del Producto"
+				required
+			/>
+			<input
+				type="text"
+				name="thumbnails"
+				id="thumbnails"
+				placeholder="Url imagen del Producto"
+			/>
+			<button type="submit">Agregar</button>
+		</form>
+		<form action="/api/products/" method="POST" class="form-post">
+			<h3>Agregar producto:</h3>
+			<input
+				type="text"
+				name="title"
+				id="title"
+				placeholder="Titulo del Producto"
+				required
+			/>
+			<input
+				type="text"
+				name="description"
+				id="description"
+				placeholder="Descripcion del Producto"
+				required
+			/>
+			<input
+				type="text"
+				name="code"
+				id="code"
+				placeholder="Codigo del Producto"
+				required
+			/>
+			<input
+				type="number"
+				name="price"
+				id="price"
+				placeholder="Precio del Producto"
+				required
+			/>
+			<label for="status">
+				<input type="checkbox" name="status" id="status" checked required />
+				Status
+			</label>
+			<input
+				type="number"
+				name="stock"
+				id="stock"
+				placeholder="Stock del Producto"
+				required
+			/>
+			<input
+				type="text"
+				name="category"
+				id="category"
+				placeholder="Categoria del Producto"
+				required
+			/>
+			<input
+				type="text"
+				name="thumbnails"
+				id="thumbnails"
+				placeholder="Url imagen del Producto"
+			/>
+			<button type="submit">Agregar</button>
+		</form>
+	</body>
+</html>

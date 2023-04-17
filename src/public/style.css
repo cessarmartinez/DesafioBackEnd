@@ -1,0 +1,25 @@
+.form-post {
+	display: flex;
+	flex-direction: column;
+	max-width: 800px;
+	justify-content: center;
+	align-items: center;
+	row-gap: 10px;
+	margin: 3vh 10vh;
+	padding: 15px 0;
+	background: #610d01;
+	color: white;
+}
+
+.form-put {
+	display: flex;
+	flex-direction: column;
+	max-width: 800px;
+	justify-content: center;
+	align-items: center;
+	row-gap: 10px;
+	margin: 3vh 10vh;
+	padding: 15px 0;
+	background: #000000;
+	color: white;
+}
