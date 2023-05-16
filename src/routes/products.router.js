@@ -1,83 +1,60 @@
 const { Router } = require("express");
-const ProductManager = require("../ProductManager");
+const ProductManagerMongo = require("../Managers/mongo/product.mongo.js");
 
 const router = Router();
-const productManager = new ProductManager();
+const productManager = new ProductManagerMongo();
 
+// GET
+// productos
 router.get("/", async (req, res) => {
 	try {
-		const productsArray = await productManager.getProducts();
-		let limit = req.query.limit;
-
-		if (!limit || limit > productsArray.length) {
-			res.send(productsArray);
-		}
-
-		return res.send(productsArray.slice(0, limit));
+		const products = await productManager.getProducts();
+		res.status(200).send({
+			status: "success",
+			payload: products,
+		});
 	} catch (error) {
-		res.status(404).send({ status: 404, error: error.message });
+		throw new Error("router.get/products" + error.message);
 	}
 });
-
-router.get("/:pId", async (req, res) => {
+// producto
+router.get("/:pid", async (req, res) => {
 	try {
-		const { pId } = req.params;
-		const productById = await productManager.getProductById(parseInt(pId));
-		const productsArray = await productManager.getProducts();
+		const { pid } = req.params;
+		const onlyProduct = await productManager.getProductsById(pid);
 
-		if (!pId || pId > productsArray.length) {
-			return res
-				.status(404)
-				.send({ error: `El producto con id ${pId} no existe` });
-		}
-
-		return res.send({ message: "product obtained successfully", productById });
+		res.status(200).send({
+			status: "success",
+			payload: onlyProduct,
+		});
 	} catch (error) {
-		res.status(404).send({ status: 404, error: error.message });
+		throw new Error("router.get/products" + error.message);
 	}
 });
 
+// POST
 router.post("/", async (req, res) => {
 	try {
-		const body = req.body;
-		const productAdded = await productManager.addProduct(body);
-		return res.status(200).send({
-			status: 200,
-			payload: { productAdded },
-			message: "product added successfully",
+		const newProduct = req.body;
+		const result = await productManager.AddProduct(newProduct);
+
+		res.status(200).send({
+			status: "success",
+			payload: result,
 		});
 	} catch (error) {
-		res.status(404).send({ status: 404, error: error.message });
+		throw new Error("router.post" + error.message);
 	}
 });
 
-router.put("/:pId", async (req, res) => {
-	try {
-		const { pId } = req.params;
-		const body = req.body;
-		const productById = await productManager.updateProduct(pId, body);
-
-		return res.status(200).send({
-			status: "success",
-			payload: { productById },
-			message: "product updated successfully",
-		});
-	} catch (error) {
-		res.status(404).send({ status: 404, error: error.message });
-	}
+// PUT
+router.put("/:pid", (req, res) => {
+	res.status(200).send("ACTUALIZAR PRODUCTO");
 });
-router.delete("/:pId", async (req, res) => {
-	try {
-		const { pId } = req.params;
-		const productById = await productManager.deleteProduct(pId);
-		return res.status(200).send({
-			status: "success",
-			payload: { productById },
-			message: "product deleted successfully",
-		});
-	} catch (error) {
-		res.status(404).send({ status: 404, error: error.message });
-	}
+
+// DELETE
+router.delete("/:pid", (req, res) => {
+	res.status(200).send("BORRAR PRODUCTO");
 });
 
 module.exports = router;
