@@ -55,8 +55,6 @@ app.use("/", viewsRouter)
 app.use(routerServer)
 
 
-// estudiar https://refactoring.guru/es/design-patterns/singleton
-
 server = app.listen(PORT, (err)=>{
     if (err) console.log ("Error en el servidor ", err)
     console.log(`Escuchando en Puerto ${PORT}`)
