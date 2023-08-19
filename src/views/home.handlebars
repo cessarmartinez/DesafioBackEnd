@@ -1,0 +1,37 @@
+<div>
+    <h1>
+        {{title}}
+    </h1>
+</div>
+   <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        {{#each products}}      
+                <div class="card h-100">
+                    <img class="card-img-top" src={{this.image}} alt="${product.descripcion}" />
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <h5 class="fw-bolder">{{this.name}}</h5>
+                            {{this.price}} $
+                        </div>
+                    </div>
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                    <div class="text-center">
+                        <button class="btn btn-outline-dark mt-auto ">Agregar</button>
+                    </div>
+                </div>
+                </div>
+        {{/each}}
+            </div>
+        </div>
+    </section>
+    <center>
+        {{#if hasPrevPage}}
+            <a href="/products?page={{prevPage}}"><button class="btn">Anterior</button></a>
+        {{/if}}
+        {{#if hasNextPage}}
+            <a href="/products?page={{nextPage}}"><button class="btn">Siguiente</button></a>
+        {{/if}}
+    </center>
+
+<script src="/static/js/main.js"></script>
