@@ -10,7 +10,7 @@ class UserController {
     //GET
     getUsers = async (req, res) => {
         try {
-            let users = await userService.getUsers(); // busco todos mis users
+            let users = await userService.getUsers();
             res.sendSuccess(users);
         } catch (error) {
             res.sendServerError(error);
@@ -43,7 +43,6 @@ class UserController {
     createUsers = async (req, res) => {
         try {
             let user = req.body;
-            // creo el nuevo objeto respetando el modelo de objetos pasados.
             const newUser = {
                 firstName: user.firstName,
                 lastName: user.lastName,
@@ -51,8 +50,7 @@ class UserController {
                 dateOfBirth: user.dateOfBirth,
                 password: createHash(user.password),
             };
-            let result = await userService.createUser(newUser); // lo creo en mi base de datos
-            //res.status(200).send({ result }); // devuelvo el resultado.
+            let result = await userService.createUser(newUser); 
             res.sendSuccess(result);
         } catch (error) {
             res.sendServerError(error);
