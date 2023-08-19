@@ -22,7 +22,7 @@ class UserController {
             let html = `<div>
             <h1>Prueba de envio de mail por servidor </h1>
             </div>`;
-            let result = await sendMail("lautaro.garibaldi@gmail.com", "prueba abstraccion mail", html);
+            let result = await sendMail("cesarmartine.02@gmail.com", "prueba abstraccion mail", html);
             res.sendSuccess("email Enviado");
         } catch (error) {
             res.sendServerError(error);
