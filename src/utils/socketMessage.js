@@ -28,10 +28,10 @@ exports.socketMessage = (io) => {
                 } else {
                     msgError = "No se pudo crear el producto. algun campo no fue completado.";
                 }
-                return socket.emit("productAdd", { status: "error", message: msgError });
+                return socket.emit("Producto agregado", { status: "error", message: msgError });
             }
             const newData = await productService.getProducts(20);
-            return io.emit("productAdd", newData);
+            return io.emit("producto Agregado", newData);
         });
 
         socket.on("authenticated", (data) => {

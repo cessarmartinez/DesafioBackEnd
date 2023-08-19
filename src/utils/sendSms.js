@@ -11,10 +11,10 @@ exports.sendSms = () =>
             to: '+543364395087'
         })
 
-exports.sendWhatsapp = () =>
+/*exports.sendWhatsapp = () =>
     client.messages
     .create({
         body: 'Prueba',
         from: `whatsapp:+18146288348`,
         to: `whatsapp:+543364395087`
-    })
+    })*/

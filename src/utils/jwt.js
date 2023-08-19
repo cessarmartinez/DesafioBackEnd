@@ -16,13 +16,13 @@ const authToken = (req, res, next) => {
     const authHeader = req.headers["authorization"];
 
     if (!authHeader) {
-        res.status(401).send({ status: "error", error: "no autenticado" });
+        res.status(401).send({ status: "error", error: "No Autorizado" });
     }
 
     const token = authHeader.split(" ")[1];
 
     jwt.verify(token, process.env.JWT_PRIVATE_KEY, (error, credential) => {
-        if (error) return res.status(403).send({ status: "error", error: "no autenticado" });
+        if (error) return res.status(403).send({ status: "error", error: "No autorizado" });
 
         req.user = credential.user;
         next();

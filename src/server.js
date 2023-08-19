@@ -30,12 +30,7 @@ app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 // handelbars
 
-app.use(express.json());
-app.use(cors());
-//app.use(addLogger);
-app.use(express.urlencoded({ extended: true })); // Configuro mi servidor para que reciba  datos complejos por url.
-app.use(cookieParser("Palabr4S3cret4"));
-app.use("/static", express.static(__dirname + "/public"));
+
 
 initPassport();
 //initPassportGithub();
@@ -48,14 +43,23 @@ app.use(routerApp);
     res.status(500).send("Algo salio mal.");
 });*/
 
+
+app.use(express.json());
+app.use(cors());
+//app.use(addLogger);
+app.use(express.urlencoded({ extended: true })); // Configuro mi servidor para que reciba  datos complejos por url.
+app.use(cookieParser("Palabr4S3cret4"));
+app.use("/static", express.static(__dirname + "/public"));
+
+
 app.use(errorHandler);
 
 const swaggerOptions = {
     definition: {
         openapi: "3.0.1",
         info: {
-            title: "Documentacion de LogicWork",
-            description: "Esta es la primera documentacion de LogicWork",
+            title: "Documentacion",
+            description: "descripcion",
         },
     },
     apis: [`${__dirname}/docs/**/*.yaml`],
@@ -65,7 +69,7 @@ const specs = swaggerJsDoc(swaggerOptions);
 
 app.use("/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
-// Implementaicon de Socket.Io
+//Socket.Io
 const PORT = process.env.PORT;
 socketMessage(io);
 

@@ -10,7 +10,7 @@ class UserController {
     //GET
     getUsers = async (req, res) => {
         try {
-            let users = await userService.getUsers();
+            let users = await userService.getUsers(); // busco todos mis users
             res.sendSuccess(users);
         } catch (error) {
             res.sendServerError(error);
@@ -22,7 +22,7 @@ class UserController {
             let html = `<div>
             <h1>Prueba de envio de mail por servidor </h1>
             </div>`;
-            let result = await sendMail("cesarmartine.02@gmail.com", "prueba mail", html);
+            let result = await sendMail("cesarmartine.02@gmail.com", "prueba abstraccion mail", html);
             res.sendSuccess("email Enviado");
         } catch (error) {
             res.sendServerError(error);
@@ -51,6 +51,7 @@ class UserController {
                 password: createHash(user.password),
             };
             let result = await userService.createUser(newUser); 
+            //res.status(200).send({ result });
             res.sendSuccess(result);
         } catch (error) {
             res.sendServerError(error);

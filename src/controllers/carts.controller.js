@@ -7,18 +7,18 @@ const { codeGenerator } = require("../utils/codeGenerator.js");
 require("dotenv").config();
 
 class cartController {
+    /*Creacion del carrito*/ 
     createCart = async (req, res) => {
         try {
-            let result = await cartService.createCart(); //Creo mi carrito
+            let result = await cartService.createCart(); 
 
-            // si dio error muestro el error
             if (!result || result.status === "error") {
                 return res.status(404).send({
                     status: "error",
                     error: result,
                 });
             }
-            // si todo fue ok muestro el resultado
+
             res.status(200).send({
                 status: "success",
                 payload: result,
@@ -42,7 +42,7 @@ class cartController {
             if (!isValidCid) {
                 return res.status(404).send({ status: "error", error: `No existe el carrito id ${cid}` });
             }
-            const isPidValid = await verifyPid(pid); // Verifica si el pid que pasaste existe
+            const isPidValid = await verifyPid(pid); 
             if (!isPidValid) {
                 return res.status(404).send({
                     status: "error",
@@ -61,7 +61,7 @@ class cartController {
                 }
             }
 
-            let result = await cartService.addProduct(cid, pid); // si todo es ok agrego el producto al carrito
+            let result = await cartService.addProduct(cid, pid);
             res.status(200).send({
                 status: "success",
                 payload: result,
@@ -82,11 +82,11 @@ class cartController {
             if (!isValidCid) {
                 return res.status(404).send({ status: "error", error: `No existe el carrito id ${cid}` });
             }
-            let cart = await cartService.getCartById(cid); // busco el carrito por el id pasado
+            let cart = await cartService.getCartById(cid); 
             return res.status(200).send({
                 status: "success",
                 payload: cart,
-            }); // si lo encuentro devuelvo el producto.
+            });
         } catch (error) {
             res.status(500).send({
                 status: "ERROR",
@@ -98,11 +98,11 @@ class cartController {
 
     getCarts = async (req, res) => {
         try {
-            let carts = await cartService.getCarts(); // busco el carrito por el id pasado
+            let carts = await cartService.getCarts();
             return res.status(200).send({
                 status: "success",
                 payload: carts,
-            }); // si lo encuentro devuelvo el producto.
+            });
         } catch (error) {
             res.status(500).send({
                 status: "ERROR",
@@ -120,7 +120,7 @@ class cartController {
             if (!isValidCid) {
                 return res.status(404).send({ status: "error", error: `No existe el carrito id ${cid}` });
             }
-            const isPidValid = await verifyPid(pid); // Verifica si el pid que pasaste existe
+            const isPidValid = await verifyPid(pid); 
             if (!isPidValid) {
                 return res.status(404).send({
                     status: "error",
@@ -179,8 +179,6 @@ class cartController {
             const token = req.cookies.coderCookieToken;
             let user = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
 
-            //Verifico que todos los productos pasados en el array sean validos
-            //formato (array de objetos[{idProduct,quantity}])
             for (const product of products) {
                 const validPid = await productService.getProduct(product.idProduct);
                 if (!validPid || validPid.status === "error") {
@@ -226,14 +224,14 @@ class cartController {
                 return res.status(404).send({ status: "error", error: `No existe el carrito id ${cid}` });
             }
 
-            const isPidValid = await verifyPid(pid); // Verifica si el pid que pasaste existe
+            const isPidValid = await verifyPid(pid); 
             if (!isPidValid) {
                 return res.status(404).send({
                     status: "error",
                     error: `No existe el producto id ${pid}`,
                 });
             }
-            const cart = await cartService.getCartById(cid); // Verifico si el cid que paso existe
+            const cart = await cartService.getCartById(cid); 
             const products = cart.product.find((producto) => producto.idProduct._id == pid);
             if (!products) {
                 return res.status(404).send({
@@ -270,9 +268,8 @@ class cartController {
             let productsUnavailable = []; //Aux para ingresar productos sin stock
 
             if (cart.product.length == 0) {
-                return res.status(405).send({ status: "error", error: `No hay productos el carrito id ${cid}` }); // Verifico que el carrito no este vacio.
+                return res.status(405).send({ status: "error", error: `No hay productos el carrito id ${cid}` }); 
             }
-            // Verifico si tengo stock necesario para cubrir la venta. luego si es asi hago el descuento de stock sino paso los productos a el aux de no disponibles
             for (const product of cart.product) {
                 let stock = product.idProduct.stock;
                 let pid = product.idProduct._id;
@@ -283,7 +280,6 @@ class cartController {
                     productsUnavailable.push(product);
                 }
             }
-            // Filtro mi carrito los productos que puse en el array aux de no disponibles.
             const ProductsAvailable = cart.product.filter(
                 (product) => !productsUnavailable.some((productUnavailable) => productUnavailable.idProduct._id === product.idProduct._id)
             );
